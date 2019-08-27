@@ -31,8 +31,6 @@ This first dataset contained various features which provided basic information a
 *	price: The cost of the application
 *	itunes_link: Link to the apps iTunes page
 *	date: Date of data retrieval
-
-A sample screenshot has been provided below:
  
 Ranking info data: 
 The next dataset was more crucial and contained the ranking information of each application for the last three years. The greatest and most visible hurdle in the dataset was the presence of numerous null values. This was a significant initial barrier for the project.
