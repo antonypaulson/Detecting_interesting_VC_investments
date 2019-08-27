@@ -82,7 +82,13 @@ Five important app metrics were derived from the data, they are listed below:
 
 iii.	Other features :
 
-*	Subscription app: Subscription services were highly favored by venture capitalists. To support this a natural language processing was done on the description column of applications that had a higher user rating than 4. The top word occurring in this analysis was the word subscription. This was a strong indication that the feature whether an app is a subscription app or not is important for potential investors. Additionally all applications that the investors indicated as being interesting for them were subscription apps. 
+*	Subscription app: Subscription services were highly favored by venture capitalists. To support this a natural language processing was done on the description column of applications that had a higher user rating than 4. The top word occurring in this analysis was the word subscription. 
+
+![Subscription apps](/images/Subscription_imp.png)
+
+
+This was a strong indication that the feature whether an app is a subscription app or not is important for potential investors. Additionally all applications that the investors indicated as being interesting for them were subscription apps.
+
 *	Days the App has been active: As an investor it is always a priority to invest in firms which are early in their stages and also indicate high potential for growth. The age of an application therefore becomes very interesting.
 *	Category of the app: Another interesting attribute of an app with regards to investments would be whether the app is in a category where VC investments are common for the last few quarters. This indicates the current trends in the market. This was gauged from a website called CB insights.
 *	Developer portfolio: The developer of an app is also really an interesting aspect. It was interesting to find out whether some developers were consistently delivering highly growing apps.
