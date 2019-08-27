@@ -16,7 +16,12 @@ An acceptable working machine learning model was also created to predict consist
 Two raw datasets were available which contained information pertaining to applications. 
 
 App info data: 
-This first dataset contained various features which provided basic information about a particular application. This information is readily visible on the iOS app store pages. The features are as follows:
+This first dataset contained various features which provided basic information about a particular application. This information is readily visible on the iOS app store pages. 
+
+![App Info set](/images/app info.png)
+
+
+The features are as follows:
 *	itunes_app_id: The unique identification number of an application
 *	app_name: The name of the application
 *	developer: The developer of the application
