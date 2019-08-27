@@ -115,6 +115,6 @@ The project was taken a step further to create a machine learning model to predi
 
 ![Consistency correlation](/images/trd.png)
 
-Machine learning models namely a Multiple linear regression model, K nearest neighbor regression, Decsion tree regression, boosted trees and finally random forest decision trees. The random forest model performed the best achieving an accuracy of close to 95%
+Machine learning models namely a Multiple linear regression model, K nearest neighbor regression, Decsion tree regression, boosted trees and finally random forest decision trees were implemented. The random forest model performed the best achieving an accuracy of close to 95%
 
 
