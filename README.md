@@ -44,12 +44,15 @@ However using advanced imputation methodologies, this barrier could be overcome.
 This section discusses all of the steps followed to achieve the objective of the project.
 
 
-i.	Ranking dataset Imputation: As it was evident during the analysis of the data, the ranking panel data frame needed to be setup properly. The null values needed to be taken care of.
+i.	Ranking dataset Imputation: 
+
+As it was evident during the analysis of the data, the ranking panel data frame needed to be setup properly. The null values needed to be taken care of.
 Intuitively, this was achieved by first performing a forward fill to imply a conservative approach where the past ranks were carried forward. This handled consequent null values. The second step in the imputation process was to perform a “backward fill” to handle ranking panel data that started with null values. These were not filled during the forward fill process.
 In this manner all null values were imputed for further analysis.
 
 
 ii.	Ranking Feature Extraction:
+
 The next step was to extract features from the ranking dataset. 
 Five important app metrics were derived from the data, they are listed below:
 *	Top rank achieved by the app: In the past 3 years, the highest rank achieved by an app was derived.
