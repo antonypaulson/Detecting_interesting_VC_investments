@@ -72,6 +72,10 @@ Five important app metrics were derived from the data, they are listed below:
 *	Top rank achieved by the app: In the past 3 years, the highest rank achieved by an app was derived.
 *	Rank growth achieved by the app: The growth of an app in terms of rank was also calculated. The formula used was:
 *	Rank growth = (Worst Rank – Rank on last day)
+
+![Growth DIstribution](/images/Growth_dist.png)
+
+
 *	Days at top rank: This feature was intended to check the consistency of an app performing well. It denotes the total number of days an application stayed at its top rank.
 *	Average daily growth achieved by the app: Sometimes an app rapidly reaches its top rank and stops growing in terms of rank but in terms of revenue and company performance, the application continues to grow. This is known as the ceiling effect. To overcome this and to estimate how much an app grows, the average daily growth was computed by first deriving the age of the app from the application info data frame and then dividing rank growth by this value.
 *	Maximum rate of rank growth of the app: This is the percentage of rank growth achieved by the app. This feature also intends to overcome the ceiling effect.
