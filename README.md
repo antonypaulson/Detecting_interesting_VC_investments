@@ -73,4 +73,9 @@ iii.	Other features :
 
 iv.	The scoring model:
 
-All the derived categories were then combined and assigned weights. The apps were all compared using this scoring model and scores were generated across categories.
+All the derived categories were then combined and assigned weights. The apps were all compared using this scoring model and scores were generated across categories. The potential applications ideal for VC investments were thus found.
+
+
+4. Training a machine learning model to predict consistency
+
+The project was taken a step further to create a machine learning model to predict the number of days an app consistently stayed at the top rank. Machine learning models namely a Multiple linear regression model, K nearest neighbor regression, Decsion tree regression, boosted trees and finally random forest decision trees. The random forest model performed the best achieving an accuracy of close to 95%
