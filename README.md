@@ -103,6 +103,9 @@ iv.	The scoring model:
 
 All the derived categories were then combined and assigned weights. The apps were all compared using this scoring model and scores were generated across categories. The potential applications ideal for VC investments were thus found.
 
+![Investments Category](/images/Scoring_model.png)
+
+![Investments Category](/images/Results.png)
 
 4. Machine learning model to predict consistency
 
