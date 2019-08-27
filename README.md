@@ -110,3 +110,6 @@ All the derived categories were then combined and assigned weights. The apps wer
 4. Machine learning model to predict consistency
 
 The project was taken a step further to create a machine learning model to predict the number of days an app consistently stayed at the top rank. Machine learning models namely a Multiple linear regression model, K nearest neighbor regression, Decsion tree regression, boosted trees and finally random forest decision trees. The random forest model performed the best achieving an accuracy of close to 95%
+
+
+![Consistency correlation](/images/trd.png)
