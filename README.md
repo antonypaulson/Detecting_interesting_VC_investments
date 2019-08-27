@@ -5,6 +5,8 @@ Given a large pool of applications and their corresponding change in ranking for
 The project was performed on a dataset of 68,000 of real applications on the apple application store. To take the project a step further the scope was also increased to check whether the growth in ranking of an application can be predicted using various available features and applying the most appropriate machine learning models available.
 Further research was also conducted into various potential data sources that would increase the predictability of growth of a firm.
 
+An acceptable working machine learning model was also created to predict consistency in performance.
+
 2.	ANALYSIS OF THE DATA
 
 Two raw datasets were available which contained information pertaining to applications. 
