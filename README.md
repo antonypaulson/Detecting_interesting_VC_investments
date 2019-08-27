@@ -46,6 +46,9 @@ The features are as follows:
 Ranking info data: 
 The next dataset was more crucial and contained the ranking information of each application for the last three years. The greatest and most visible hurdle in the dataset was the presence of numerous null values. This was a significant initial barrier for the project.
 However using advanced imputation methodologies, this barrier could be overcome. To get an idea of the dataset a screenshot of the ranking panel can be seen below:
+
+![App Ranking Panel](/images/ranking.png)
+
  
 
 
