@@ -18,7 +18,7 @@ Two raw datasets were available which contained information pertaining to applic
 App info data: 
 This first dataset contained various features which provided basic information about a particular application. This information is readily visible on the iOS app store pages. 
 
-![App Info set](/images/app info.png)
+![App Info set](/images/app%20info.png)
 
 
 The features are as follows:
