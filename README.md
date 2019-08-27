@@ -2,7 +2,11 @@
 1.	AIM OF THE PROJECT
 
 Given a large pool of applications and their corresponding change in ranking for the past 3 years, detect applications that are potential candidates for venture capital investments.
-The project was performed on a dataset of 68,000 of real applications on the apple application store. To take the project a step further the scope was also increased to check whether the growth in ranking of an application can be predicted using various available features and applying the most appropriate machine learning models available.
+The project was performed on a dataset of 68,000 of real applications on the apple application store. 
+
+![Applications by category](/images/appcat.png)
+
+To take the project a step further the scope was also increased to check whether the growth in ranking of an application can be predicted using various available features and applying the most appropriate machine learning models available.
 Further research was also conducted into various potential data sources that would increase the predictability of growth of a firm.
 
 An acceptable working machine learning model was also created to predict consistency in performance.
