@@ -1,0 +1,22 @@
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+
+# Generated scoring / notebook outputs
+outputs/*.csv
+outputs/*.xlsx
+outputs/*.png
+top_scorers.xlsx
+final_analysis_frame.csv
+
+# Large raw extracts that are not shipped in git
+data/raw/*.pkl
+data/final_analysis_frame.csv
