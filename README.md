@@ -1,121 +1,143 @@
-# Detecting_interesting_VC_investments
-1.	AIM OF THE PROJECT
+# Detecting interesting VC investments
 
-Given a large pool of applications and their corresponding change in ranking for the past 3 years, detect applications that are potential candidates for venture capital investments.
-The project was performed on a dataset of 68,000 of real applications on the apple application store. 
+2019 analysis of ~68,000 real iOS App Store listings: given a pool of apps and three years of ranking history, which ones look like venture-capital candidates?
 
-![Applications by category](/images/appcat.png)
+This repository keeps the **original scoring rules, reference apps, and conclusions**. It does not add new investment picks. The code was updated so the project runs on current Python instead of a 2019 Google Colab session.
 
-To take the project a step further the scope was also increased to check whether the growth in ranking of an application can be predicted using various available features and applying the most appropriate machine learning models available.
-Further research was also conducted into various potential data sources that would increase the predictability of growth of a firm.
+**Not investment advice.** Rankings and scores describe a 2019 snapshot of App Store data.
 
-An acceptable working machine learning model was also created to predict consistency in performance.
+## Question
 
-2.	ANALYSIS OF THE DATA
+1. From listing metadata and rank history, surface apps that look like VC candidates (growth, consistency, category, subscription, developer track record).
+2. Check whether **days spent at an app's best rank** (consistency) can be predicted from the same features.
 
-Two raw datasets were available which contained information pertaining to applications. 
+## Method
 
-App info data: 
-This first dataset contained various features which provided basic information about a particular application. This information is readily visible on the iOS app store pages. 
+### Data
 
-![App Info set](/images/app%20info.png)
+Two raw tables were used in the original Colab work:
 
+- **App info** — listing fields visible on the App Store page (`itunes_app_id`, name, developer, category, editor's choice, rating, IAP, release date, size, languages, price, description, …).
 
-The features are as follows:
-*	itunes_app_id: The unique identification number of an application
-*	app_name: The name of the application
-*	developer: The developer of the application
-*	website:  The website of the company of the application 
-*	category: The category to which an application belongs to
-*	is_editor_choice:  Whether or not an application is an editors choice app
-*	rating_oo5: The user rating out of 5 achieved by application
-*	num_ratings: The number of user ratings provided for the application
-*	has_iap: Whether the application has in-app purchases or not
-*	release_date: The date the application was released
-*	current_version: The latest version of the application
-*	age_rating: The age group that the app is available to
-*	file_size: The file size of the application
-*	editor_notes: Notes from the editor
-*	description:  The description text of an application
-*	os_compatibility: Operating system which the application is compatible with
-*	languages: The various languages supported by the application
-*	price: The cost of the application
-*	itunes_link: Link to the apps iTunes page
-*	date: Date of data retrieval
- 
-Ranking info data: 
-The next dataset was more crucial and contained the ranking information of each application for the last three years. The greatest and most visible hurdle in the dataset was the presence of numerous null values. This was a significant initial barrier for the project.
-However using advanced imputation methodologies, this barrier could be overcome. To get an idea of the dataset a screenshot of the ranking panel can be seen below:
+  ![App info fields](images/app_info.png)
 
-![App Ranking Panel](/images/ranking.png)
+- **Ranking panel** — daily ranks for about three years, with many missing values.
 
- 
+The pickle files for those tables are **not in git** (they lived on Google Drive). What *is* shipped is the derived scoring table. See [data/README.md](data/README.md).
 
+![Applications by category](images/appcat.png)
 
+### Rank imputation
 
-3.	METHODOLOGY
+Null ranks were filled with a conservative **forward fill** (carry the last known rank) and then a **backward fill** for histories that started empty.
 
-This section discusses all of the steps followed to achieve the objective of the project.
+![App ranking panel](images/ranking.png)
 
+### Features taken from the rank panel
 
-i.	Ranking dataset Imputation: 
+| Feature | Definition |
+| --- | --- |
+| Top rank | Best (lowest) rank in the window |
+| Rank growth | Worst rank − rank on the last day |
+| Days at top rank | How long the app stayed at its best rank |
+| Average daily growth | Rank growth ÷ age (capped at 1,095 days), to soften a ceiling effect |
+| Max growth rate | Rank growth as a share of (top rank + rank growth) |
 
-As it was evident during the analysis of the data, the ranking panel data frame needed to be setup properly. The null values needed to be taken care of.
-Intuitively, this was achieved by first performing a forward fill to imply a conservative approach where the past ranks were carried forward. This handled consequent null values. The second step in the imputation process was to perform a “backward fill” to handle ranking panel data that started with null values. These were not filled during the forward fill process.
-In this manner all null values were imputed for further analysis.
+![Growth distribution](images/Growth_dist.png)
 
+### Other features
 
-ii.	Ranking Feature Extraction:
+- **Subscription.** Tokenizing descriptions of highly rated apps, the strongest signal was subscription language (`subscription`, `renewal`, `subscribe`). Apps the investors had already marked as interesting were subscription apps.
+- **Age / active days.** Earlier-stage apps with strong rank movement are more interesting than mature ones sitting still.
+- **Category.** Health & Fitness, Finance, Social Networking, Travel, and Education received extra weight from then-current CB Insights VC activity (2019).
+- **Developer portfolio.** Developers with more than one high-growth app received a bonus.
 
-The next step was to extract features from the ranking dataset. 
-Five important app metrics were derived from the data, they are listed below:
-*	Top rank achieved by the app: In the past 3 years, the highest rank achieved by an app was derived.
-*	Rank growth achieved by the app: The growth of an app in terms of rank was also calculated. The formula used was:
-*	Rank growth = (Worst Rank – Rank on last day)
+![Subscription signal](images/Subscription_imp.png)
 
-![Growth DIstribution](/images/Growth_dist.png)
+![Investment categories](images/Investments.png)
 
+### Scoring model
 
-*	Days at top rank: This feature was intended to check the consistency of an app performing well. It denotes the total number of days an application stayed at its top rank.
-*	Average daily growth achieved by the app: Sometimes an app rapidly reaches its top rank and stops growing in terms of rank but in terms of revenue and company performance, the application continues to grow. This is known as the ceiling effect. To overcome this and to estimate how much an app grows, the average daily growth was computed by first deriving the age of the app from the application info data frame and then dividing rank growth by this value.
-*	Maximum rate of rank growth of the app: This is the percentage of rank growth achieved by the app. This feature also intends to overcome the ceiling effect.
+Each derived metric is cut into bins and weighted. Subscription is a 0/20 flag. Category and developer bonuses are added. Apps are ranked by **total score**.
 
-iii.	Other features :
+![Scoring model](images/Scoring_model.png)
 
-*	Subscription app: Subscription services were highly favored by venture capitalists. To support this a natural language processing was done on the description column of applications that had a higher user rating than 4. The top word occurring in this analysis was the word subscription. 
+![Scoring results](images/Results.png)
 
-![Subscription apps](/images/Subscription_imp.png)
+The original notebook also listed a **reference set** of apps investors had already called interesting (the “magic 15”, with Netflix commented out). Those names are a benchmark, not model output:
 
+The Action Network, ESPN, AllTrails, Headspace, Quizlet, Duolingo, The Athletic, Prodigy Math Game, onX Hunt, HOOKED, Crunchyroll, The Wall Street Journal, MLB At Bat, Surfline.
 
-This was a strong indication that the feature whether an app is a subscription app or not is important for potential investors. Additionally all applications that the investors indicated as being interesting for them were subscription apps.
+Re-running the same rules on the shipped table, the highest-scoring apps are led by **BetterMe: Weight Loss Running** (score 84), then Muscle Booster Workout Tracker, BetterMe: Calm,Sleep,Meditate, and other subscription Health/Fitness and Finance apps. That ranking is a reproduction of the 2019 model, not a 2026 recommendation.
 
-*	Days the App has been active: As an investor it is always a priority to invest in firms which are early in their stages and also indicate high potential for growth. The age of an application therefore becomes very interesting.
-*	Category of the app: Another interesting attribute of an app with regards to investments would be whether the app is in a category where VC investments are common for the last few quarters. This indicates the current trends in the market. This was gauged from a website called CB insights.
+### Consistency model
 
-![Investments Category](/images/Investments.png)
+Linear regression, k-NN, a decision tree, boosted trees, and a random forest were trained to predict **days at top rank**. In the original Colab run (sklearn 0.20, random forest default `n_estimators=10`), the random forest reached about **95%** R² on the held-out split after a small grid search.
 
+![Consistency correlation](images/trd.png)
 
-*	Developer portfolio: The developer of an app is also really an interesting aspect. It was interesting to find out whether some developers were consistently delivering highly growing apps.
+![Feature importance](images/feat_imp.png)
 
+The shipped CSV does not include `is_editor_choice` or the unshipped raw merge, so the runnable fallback **does not reproduce the 95% figure**. That number is the original Colab result on the full cleaned table. On the shipped extract, a random forest is a weak predictor of `top_rank_days` (most apps spent a single day at their best rank). The target definition and the rest of the feature list are unchanged.
 
+## How to run
 
-iv.	The scoring model:
+Python 3.10+ (3.12 works). From the repository root:
 
-All the derived categories were then combined and assigned weights. The apps were all compared using this scoring model and scores were generated across categories. The potential applications ideal for VC investments were thus found.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-![Investments Category](/images/Scoring_model.png)
+### Reproduce the scoring model (no Jupyter required)
 
-![Investments Category](/images/Results.png)
+```bash
+python -m vc_investments --save
+pytest
+```
 
-4. Machine learning model to predict consistency
+`--save` writes `outputs/top_scorers.csv` (same top names as the notebook) and `outputs/reference_apps.csv`.
 
-The project was taken a step further to create a machine learning model to predict the number of days an app consistently stayed at the top rank. 
+### Notebooks
 
+Install a kernel if needed (`python -m ipykernel install --user`), then open from the repo root so relative `data/` paths work.
 
+| Notebook | Needs | What it does |
+| --- | --- | --- |
+| `TCG_scoring_model.ipynb` | `data/frame_scoring_model.csv` (shipped) | Binning, weights, top scorers, reference apps |
+| `EDA_and_Machine_Learning_TCG.ipynb` | scoring CSV, or `data/final_analysis_frame.csv` if you rebuilt it | Cleaning (when raw merge is present), plots, consistency models |
+| `TCG_Data_preparation.ipynb` | `data/raw/app_info_df.pkl` and `app_rank_df.pkl` | Imputation, rank features, subscription flag, merge |
 
-![Consistency correlation](/images/trd.png)
+```bash
+jupyter notebook TCG_scoring_model.ipynb
+```
 
-Machine learning models namely a Multiple linear regression model, K nearest neighbor regression, Decsion tree regression, boosted trees and finally random forest decision trees were implemented. The random forest model performed the best achieving an accuracy of close to 95%
+### If you have the original pickles
 
+Put them in `data/raw/` as described in [data/README.md](data/README.md), then run the data-prep notebook. It writes `data/final_analysis_frame.csv` for the EDA notebook. Those pickles are large and are **not** part of this PR.
 
-![Feature Importance](/images/feat_imp.png)
+## Project layout
+
+```text
+data/                  # shipped CSVs + notes on missing pickles
+images/                # figures from the original write-up
+vc_investments/        # scoring + consistency helpers
+tests/                 # checks that scoring still matches the 2019 rules
+TCG_*.ipynb            # original analysis, paths and APIs updated
+```
+
+## Compatibility notes
+
+The 2019 notebooks used Python 3.6, pandas 0.24-era APIs, and Colab Drive mounts. The updates:
+
+- Load CSVs from `data/` instead of the Colab working directory or `/content/drive/My Drive/TCG/`.
+- Replace `fillna(method=...)` with `ffill` / `bfill`.
+- Pass `axis=` to `drop` / `concat` (required in pandas 2+).
+- Use `corr(numeric_only=True)`, `histplot` instead of `distplot`, and `countplot(x=...)`.
+- Convert `pd.cut` scores to numbers **before** summing (categorical dtypes no longer add the way they did in 2019).
+- Set `RandomForestRegressor(n_estimators=10)` so the first forest matches sklearn 0.20's default.
+
+## License
+
+The original repository did not include a license file. Treat the analysis as the author's 2019 coursework unless the owner adds terms.
